@@ -1,0 +1,12 @@
+<form [formGroup]="form">
+  <ul>
+    <li>
+      <input formControlName="featureSet" type="checkbox"> {{fs.name}}
+    </li>
+    <ul class="inner">
+      <li *ngFor="let epic of epics.controls; let i = index">
+        <input [formControl]="epic" type="checkbox"> {{fs.epics[i].desc}}
+      </li>
+    </ul>
+  </ul>
+</form>
