@@ -11,7 +11,6 @@ export class EpicTableComponent implements OnInit, OnChanges {
   @Input() featureSet: any;
   form: FormGroup;
   fs: any;
-  shouldUpdateChildren: boolean = true;
 
   constructor(private fb: FormBuilder) {
   }
@@ -21,7 +20,7 @@ export class EpicTableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.fs = changes.featureSet.currentValue;
-    const epics = Array(this.fs.epics.length).fill(false);
+    const epics = Array(this.fs.epics.length).fill(false); // [false, false, false]
 
     /**
      * Create the form group.
@@ -37,11 +36,8 @@ export class EpicTableComponent implements OnInit, OnChanges {
     this.form.get('featureSet').valueChanges
       .pipe(distinctUntilChanged())
       .subscribe(fs => {
-        if (this.shouldUpdateChildren) {
           const checked = Array(this.fs.epics.length).fill(!!fs);
           this.form.get('epics').patchValue(checked);
-        }
-        this.shouldUpdateChildren = true;
       });
 
     /**
@@ -51,8 +47,7 @@ export class EpicTableComponent implements OnInit, OnChanges {
       .pipe(distinctUntilChanged())
       .subscribe(_epics => {
         const featureSet = !!_epics.some(epic => epic);
-        this.shouldUpdateChildren = false;
-        this.form.patchValue({featureSet});
+        this.form.patchValue({featureSet}, {onlySelf: true, emitEvent: false});
       });
   }
 

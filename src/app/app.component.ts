@@ -15,10 +15,8 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.data.getData()
-      .pipe(
-        tap(featureSets => this.featureSets = featureSets)
-      )
       .subscribe(featureSets => {
+        this.featureSets = featureSets;
       });
   }
 }
